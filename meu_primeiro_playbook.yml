@@ -1,0 +1,35 @@
+---
+- hosts: webservers
+  become: yes
+  remote_user: ansible
+  tasks:
+    - name: =====> INSTALANDO O NGINX ...
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: =====> INICIANDO NGINX ...
+      service:
+        name: nginx
+        state: started
+
+    - name: =====> HABILITANDO NGINX NO BOOT ...
+      service:
+        name: nginx
+        enabled: yes
+
+- hosts: db
+  become: yes
+  remote_user: ansible
+  tasks:
+    - name: =====> INSTALANDO O MARIADB
+      apt:
+        name: mariadb-server
+        state: latest
+        update_cache: yes
+
+    - name: =====> INICIANDO O MARIADB
+      service:
+        name: mariadb
+        state: started
