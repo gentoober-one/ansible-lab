@@ -1,0 +1,58 @@
+---
+- hosts: webservers
+  become: yes
+  remote_user: ansible
+  tasks:
+    - name: =====> INSTALANDO O NGINX ...
+      apt:
+        name: nginx
+        state: latest
+        update_cache: yes
+
+    - name: =====> COPIAR INDEX.HTML.J2
+      template:
+        src: index.html.j2
+        dest: /var/www/html/index.html
+
+    - name: =====> VALIDAR CONFIGURACAO DO NGINX
+      command: nginx -t
+      register: nginx_test
+      ignore_errors: yes
+
+    - name: =====> OUTPUT DO TESTE NGINX.CONFIG
+      debug:
+        var: nginx_test.stderr_lines
+
+    - name: =====> INICIANDO NGINX ...
+      service:
+        name: nginx
+        state: started
+      when: nginx_test.rc == 0
+
+    - name: =====> HABILITANDO NGINX NO BOOT ...
+      service:
+        name: nginx
+        enabled: yes
+      when: nginx_test.rc == 0
+
+  handlers:
+    - name: =====> RESTARTANDO O NGINX
+      service:
+        name: nginx
+        state: restarted
+
+- hosts: db
+  become: yes
+  remote_user: ansible
+  tasks:
+    - name: =====> INSTALANDO O MARIADB
+      apt:
+        name: mariadb-server
+        state: latest
+        update_cache: yes
+
+    - name: =====> INICIANDO O MARIADB
+      service:
+        name: mariadb
+        state: started
+
