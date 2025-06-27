@@ -89,3 +89,5 @@ docker compose down --volumes --remove-orphans
 
 ---
 
+## DOAÇÕES:
+gentoober@bipa.app (Lightning Network)
