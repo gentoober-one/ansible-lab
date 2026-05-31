@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt_BR"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANSIBLE LAB</title>
+<style>
+body {
+  font-size: 16px;
+  max-width: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Droid Serif', serif;
+  line-height: 1.8;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+</style>
+</head>
+<body>
+<h1>---- WEBSERVERS INFO ----</h1>
+<h1>CONTAINER: {{ ansible_hostname }}</h1>
+<h1>IP: {{ ansible_default_ipv4.address }}</h1>
+<h1>DISTRO: {{ ansible_distribution }} {{ ansible_distribution_version }} ({{ ansible_distribution_release }})</h1>
+<h1>LOAD: 1m={{ ansible_loadavg['1m'] }}, 5m={{ ansible_loadavg['5m'] }}, 15m={{ ansible_loadavg['15m'] }}</h1>
+<h1>MEM: {{ ansible_memory_mb.real.used }} MB used of total {{ ansible_memory_mb.real.total }} MB</h1>
+</body>
+</html>

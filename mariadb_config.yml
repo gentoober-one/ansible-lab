@@ -1,0 +1,37 @@
+---
+- name: Configurar banco de dados MariaDB
+  hosts: db
+  become: true
+
+  vars:
+    db_name: labdb
+    db_user: labuser
+    db_pass: mudarSenha
+    db_admin_user: dev
+    db_admin_pass: mudarSenha
+
+  tasks:
+    - name: Instalar dependência python3-pymysql
+      apt:
+        name: python3-pymysql
+        state: present
+        update_cache: true
+
+    - name: Criar o banco de dados
+      community.mysql.mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: "{{ db_admin_user }}"
+        login_password: "{{ db_admin_pass }}"
+
+    - name: Criar o usuário com permissões
+      community.mysql.mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_pass }}"
+        priv: "{{ db_name }}.*:ALL"
+        host: "%"
+        state: present
+        login_user: "{{ db_admin_user }}"
+        login_password: "{{ db_admin_pass }}"
+        column_case_sensitive: false
+
